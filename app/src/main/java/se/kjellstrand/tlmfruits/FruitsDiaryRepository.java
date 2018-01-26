@@ -14,6 +14,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import se.kjellstrand.tlmfruits.entries.model.Entry;
+import se.kjellstrand.tlmfruits.entries.model.Fruit;
 
 @Singleton
 public class FruitsDiaryRepository {
@@ -40,11 +41,29 @@ public class FruitsDiaryRepository {
 
             @Override
             public void onFailure(Call<List<Entry>> call, Throwable t) {
-                // TODO error case
+                // TODO handle error case
                 Log.e("TAG", "Error: " + t);
             }
         });
         return data;
     }
 
+    public LiveData<List<Fruit>> getFruits() {
+        // Add a in memory cache to avoid hitting the network for configuration changes
+        final MutableLiveData<List<Fruit>> data = new MutableLiveData<>();
+        service.getFruits().enqueue(new Callback<List<Fruit>>() {
+            @Override
+            public void onResponse(Call<List<Fruit>> call, Response<List<Fruit>> response) {
+                Log.e("TAG", "Got Response.");
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Fruit>> call, Throwable t) {
+                // TODO handle error case
+                Log.e("TAG", "Error: " + t);
+            }
+        });
+        return data;
+    }
 }
