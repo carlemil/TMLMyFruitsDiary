@@ -1,5 +1,6 @@
 package se.kjellstrand.tlmfruits.entries;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -8,15 +9,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import se.kjellstrand.tlmfruits.R;
+import se.kjellstrand.tlmfruits.entries.model.Entry;
 import se.kjellstrand.tlmfruits.entries.model.PostEntry;
 
 /**
@@ -30,7 +32,7 @@ public class EntriesFragment extends Fragment {
     private OnEntriesFragmentInteractionListener mListener;
 
     private EntriesViewModel viewModel;
-    private EntryRecyclerViewAdapter entryRecyclerViewAdapter;
+    private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,7 +48,7 @@ public class EntriesFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(EntriesViewModel.class);
 
         viewModel.getEntries().observe(this, entries -> {
-            entryRecyclerViewAdapter.setEntries(entries);
+            entriesRecyclerViewAdapter.setEntries(entries);
         });
 
     }
@@ -58,15 +60,47 @@ public class EntriesFragment extends Fragment {
 
         Context context = view.getContext();
 
-        entryRecyclerViewAdapter = new EntryRecyclerViewAdapter(mListener);
+        entriesRecyclerViewAdapter = new EntriesRecyclerViewAdapter(mListener);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.entry_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(entryRecyclerViewAdapter);
+        recyclerView.setAdapter(entriesRecyclerViewAdapter);
 
         setupFAB(view, context);
 
+        setupSwipeToDelete(recyclerView);
+
         return view;
+    }
+
+    private void setupSwipeToDelete(RecyclerView recyclerView) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage(R.string.confirm_delete);
+                    builder.setPositiveButton(R.string.remove, (dialog, which) -> {
+                        Entry entry = entriesRecyclerViewAdapter.getEntry(position);
+                        entriesRecyclerViewAdapter.removeEntry(position);
+                        viewModel.deleteEntry(entry.id);
+                        return;
+                    }).setNegativeButton(R.string.cancel, (dialog, which) -> {
+                        entriesRecyclerViewAdapter.notifyDataSetChanged();
+                        return;
+                    }).show();
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void setupFAB(View view, Context context) {
@@ -79,7 +113,7 @@ public class EntriesFragment extends Fragment {
                 viewModel.addEntry(new PostEntry(format.format(myCalendar.getTime())))
                         .observe(EntriesFragment.this, entry -> {
                             viewModel.getEntries().observe(EntriesFragment.this, entries -> {
-                                entryRecyclerViewAdapter.setEntries(entries);
+                                entriesRecyclerViewAdapter.setEntries(entries);
                             });
                         });
             };

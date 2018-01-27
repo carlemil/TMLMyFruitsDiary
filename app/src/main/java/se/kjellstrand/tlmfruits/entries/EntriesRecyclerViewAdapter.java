@@ -17,12 +17,12 @@ import se.kjellstrand.tlmfruits.entries.model.Entry;
  * specified {@link EntriesFragment.OnEntriesFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class EntryRecyclerViewAdapter extends RecyclerView.Adapter<EntryRecyclerViewAdapter.ViewHolder> {
+public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecyclerViewAdapter.ViewHolder> {
 
     private final EntriesFragment.OnEntriesFragmentInteractionListener mListener;
     private List<Entry> entryList;
 
-    public EntryRecyclerViewAdapter(OnEntriesFragmentInteractionListener listener) {
+    public EntriesRecyclerViewAdapter(OnEntriesFragmentInteractionListener listener) {
         mListener = listener;
     }
 
@@ -60,6 +60,17 @@ public class EntryRecyclerViewAdapter extends RecyclerView.Adapter<EntryRecycler
     public void setEntries(List<Entry> entryList) {
         this.entryList = entryList;
         notifyDataSetChanged();
+    }
+
+    public Entry getEntry(int position) {
+        return entryList.get(position);
+    }
+
+    public Entry removeEntry(int position) {
+        Entry entry = getEntry(position);
+        entryList.remove(position);
+        notifyItemRemoved(position);
+        return entry;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

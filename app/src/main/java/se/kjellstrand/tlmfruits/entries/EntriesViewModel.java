@@ -25,4 +25,8 @@ public class EntriesViewModel extends ViewModel {
     public LiveData<Entry> addEntry(PostEntry entry) {
         return fruitsDiaryRepository.addEntry(entry);
     }
+
+    public LiveData<Entry> deleteEntry(int entry){
+        return fruitsDiaryRepository.deleteEntry(entry);
+    }
 }

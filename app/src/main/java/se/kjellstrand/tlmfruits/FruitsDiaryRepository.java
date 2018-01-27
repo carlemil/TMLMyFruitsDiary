@@ -93,4 +93,22 @@ public class FruitsDiaryRepository {
         });
         return data;
     }
+
+    public LiveData<Entry> deleteEntry(int id) {
+        final MutableLiveData<Entry> data = new MutableLiveData<Entry>();
+        service.deleteEntry(id).enqueue(new Callback<Entry>() {
+            @Override
+            public void onResponse(Call<Entry> call, Response<Entry> response) {
+                Log.e("TAG", "Got Response.");
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Entry> call, Throwable t) {
+                // TODO handle error case
+                Log.e("TAG", "Error: " + t);
+            }
+        });
+        return data;
+    }
 }

@@ -9,4 +9,7 @@
     <string name="title_entries">Entries</string>
     <string name="title_about">About</string>
     <string name="about_fragment_text">My Fruits Diary is a mobile application where you can store the number of fruits you have eaten each day. The user is able to add date entries and for each date choose the fruits eaten on that specific day. The application consumes a webservice where the current entries and fruits are located. There are no requirements or limitations other than the requirements listed below under ”Software Requirements”.</string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_delete">Are you sure you want to delete this entry?</string>
 </resources>
