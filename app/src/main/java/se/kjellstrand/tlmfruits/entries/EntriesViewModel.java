@@ -7,6 +7,7 @@ import java.util.List;
 
 import se.kjellstrand.tlmfruits.FruitsDiaryRepository;
 import se.kjellstrand.tlmfruits.entries.model.Entry;
+import se.kjellstrand.tlmfruits.entries.model.PostEntry;
 
 public class EntriesViewModel extends ViewModel {
 
@@ -18,7 +19,10 @@ public class EntriesViewModel extends ViewModel {
     }
 
     public LiveData<List<Entry>> getEntries() {
-
         return fruitsDiaryRepository.getEntries();
+    }
+
+    public LiveData<Entry> addEntry(PostEntry entry) {
+        return fruitsDiaryRepository.addEntry(entry);
     }
 }

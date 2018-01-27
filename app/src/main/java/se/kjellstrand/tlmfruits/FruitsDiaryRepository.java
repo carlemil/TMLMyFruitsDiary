@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,6 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import se.kjellstrand.tlmfruits.entries.model.Entry;
 import se.kjellstrand.tlmfruits.entries.model.Fruit;
+import se.kjellstrand.tlmfruits.entries.model.PostEntry;
 
 @Singleton
 public class FruitsDiaryRepository {
@@ -22,8 +25,13 @@ public class FruitsDiaryRepository {
     private FruitsDiaryService service;
 
     public FruitsDiaryRepository() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://fruitdiary.test.themobilelife.com/")
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(FruitsDiaryService.class);
@@ -60,6 +68,25 @@ public class FruitsDiaryRepository {
 
             @Override
             public void onFailure(Call<List<Fruit>> call, Throwable t) {
+                // TODO handle error case
+                Log.e("TAG", "Error: " + t);
+            }
+        });
+        return data;
+    }
+
+    public LiveData<Entry> addEntry(PostEntry entry) {
+        // Add a in memory cache to avoid hitting the network for configuration changes
+        final MutableLiveData<Entry> data = new MutableLiveData<Entry>();
+        service.addEntry(entry).enqueue(new Callback<Entry>() {
+            @Override
+            public void onResponse(Call<Entry> call, Response<Entry> response) {
+                Log.e("TAG", "Got Response.");
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Entry> call, Throwable t) {
                 // TODO handle error case
                 Log.e("TAG", "Error: " + t);
             }

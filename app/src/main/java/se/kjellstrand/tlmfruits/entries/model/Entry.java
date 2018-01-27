@@ -12,4 +12,13 @@ public class Entry {
         this.date = date;
         this.fruit = fruit;
     }
+
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", fruit=" + fruit +
+                '}';
+    }
 }

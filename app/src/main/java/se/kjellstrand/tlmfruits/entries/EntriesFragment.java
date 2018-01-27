@@ -1,17 +1,23 @@
 package se.kjellstrand.tlmfruits.entries;
 
+import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import se.kjellstrand.tlmfruits.R;
+import se.kjellstrand.tlmfruits.entries.model.PostEntry;
 
 /**
  * A fragment representing a list of Items.
@@ -24,7 +30,7 @@ public class EntriesFragment extends Fragment {
     private OnEntriesFragmentInteractionListener mListener;
 
     private EntriesViewModel viewModel;
-    private MyEntryRecyclerViewAdapter myEntryRecyclerViewAdapter;
+    private EntryRecyclerViewAdapter entryRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,7 +46,7 @@ public class EntriesFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(EntriesViewModel.class);
 
         viewModel.getEntries().observe(this, entries -> {
-            myEntryRecyclerViewAdapter.setEntries(entries);
+            entryRecyclerViewAdapter.setEntries(entries);
         });
 
     }
@@ -50,15 +56,38 @@ public class EntriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_entry_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            myEntryRecyclerViewAdapter = new MyEntryRecyclerViewAdapter(mListener);
-            recyclerView.setAdapter(myEntryRecyclerViewAdapter);
-        }
+        Context context = view.getContext();
+
+        entryRecyclerViewAdapter = new EntryRecyclerViewAdapter(mListener);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.entry_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(entryRecyclerViewAdapter);
+
+        setupFAB(view, context);
+
         return view;
+    }
+
+    private void setupFAB(View view, Context context) {
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floating_action_button);
+        floatingActionButton.setOnClickListener((View fab) -> {
+            Calendar myCalendar = Calendar.getInstance();
+            DatePickerDialog.OnDateSetListener onDateSetListener = (view1, year, monthOfYear, dayOfMonth) -> {
+                myCalendar.set(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                viewModel.addEntry(new PostEntry(format.format(myCalendar.getTime())))
+                        .observe(EntriesFragment.this, entry -> {
+                            viewModel.getEntries().observe(EntriesFragment.this, entries -> {
+                                entryRecyclerViewAdapter.setEntries(entries);
+                            });
+                        });
+            };
+            // Pop date dialog
+            new DatePickerDialog(context, onDateSetListener, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
     }
 
     @Override
