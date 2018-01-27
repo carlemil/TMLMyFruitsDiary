@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -61,6 +62,12 @@ public class EntriesFragment extends Fragment {
         updateFruits();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.entry_list_fragment_titel);
     }
 
     private void setupSwipeToDelete(RecyclerView recyclerView) {

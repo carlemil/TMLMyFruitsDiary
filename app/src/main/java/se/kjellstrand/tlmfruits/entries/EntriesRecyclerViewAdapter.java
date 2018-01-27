@@ -35,7 +35,7 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         entryFormatterText = parent.getContext().getString(R.string.entryText);
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_entry, parent, false);
+                .inflate(R.layout.fragment_entry_list_item, parent, false);
         return new ViewHolder(view);
     }
 

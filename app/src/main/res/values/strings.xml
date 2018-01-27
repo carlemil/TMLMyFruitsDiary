@@ -13,5 +13,7 @@
     <string name="cancel">Cancel</string>
     <string name="confirm_delete">Are you sure you want to delete this entry?</string>
     <string name="entryText">%s - %d fruits and %d vitamins.</string>
+    <string name="entry_list_fragment_titel">Entry list</string>
+    <string name="about_fragment_title">About</string>
 
 </resources>
