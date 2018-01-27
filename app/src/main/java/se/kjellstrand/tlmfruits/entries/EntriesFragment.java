@@ -20,7 +20,6 @@ import java.util.Calendar;
 
 import se.kjellstrand.tlmfruits.R;
 import se.kjellstrand.tlmfruits.entries.model.PostEntry;
-import se.kjellstrand.tlmfruits.repo.Resource;
 
 /**
  * A fragment representing a list of Items.
@@ -34,13 +33,6 @@ public class EntriesFragment extends Fragment {
 
     private EntriesViewModel viewModel;
     private EntriesRecyclerViewAdapter entriesRecyclerViewAdapter;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public EntriesFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +58,7 @@ public class EntriesFragment extends Fragment {
 
         setupSwipeToDelete(recyclerView);
 
-        updateEntries(view);
+        updateFruits();
 
         return view;
     }
@@ -107,7 +99,7 @@ public class EntriesFragment extends Fragment {
             Calendar myCalendar = Calendar.getInstance();
             DatePickerDialog.OnDateSetListener onDateSetListener = (view1, year, monthOfYear, dayOfMonth) -> {
                 myCalendar.set(year, monthOfYear, dayOfMonth);
-                addEntry(view, myCalendar, new SimpleDateFormat("yyyy-MM-dd"));
+                addEntry(myCalendar, new SimpleDateFormat("yyyy-MM-dd"));
             };
             // Pop date dialog
             new DatePickerDialog(context, onDateSetListener, myCalendar
@@ -116,12 +108,12 @@ public class EntriesFragment extends Fragment {
         });
     }
 
-    private void addEntry(View view, Calendar myCalendar, SimpleDateFormat format) {
+    private void addEntry(Calendar myCalendar, SimpleDateFormat format) {
         viewModel.addEntry(new PostEntry(format.format(myCalendar.getTime())))
                 .observe(EntriesFragment.this, addEntryResource -> {
                     switch (addEntryResource.status) {
                         case SUCCESS:
-                            updateEntries(view);
+                            updateEntries();
                             break;
                         case ERROR:
                             showToast("Failed to add Entry. Possible duplicate?");
@@ -130,7 +122,14 @@ public class EntriesFragment extends Fragment {
                 });
     }
 
-    private void updateEntries(View view) {
+    private void updateFruits() {
+        viewModel.getFruits().observe(EntriesFragment.this, resource -> {
+            entriesRecyclerViewAdapter.setFruits(resource.data);
+            updateEntries();
+        });
+    }
+
+    private void updateEntries() {
         viewModel.getEntries().observe(EntriesFragment.this, getEntryResource -> {
             switch (getEntryResource.status) {
                 case SUCCESS:

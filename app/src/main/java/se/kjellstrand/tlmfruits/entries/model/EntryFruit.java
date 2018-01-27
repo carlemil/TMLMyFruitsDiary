@@ -1,15 +1,13 @@
 package se.kjellstrand.tlmfruits.entries.model;
 
-public class Fruit {
+public class EntryFruit {
     public int fruitId;
-    public String fruitType;
     public int amount;
 
     @Override
     public String toString() {
-        return "Fruit{" +
+        return "EntryFruit{" +
                 "fruitId=" + fruitId +
-                ", fruitType='" + fruitType + '\'' +
                 ", amount=" + amount +
                 '}';
     }

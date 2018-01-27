@@ -6,21 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import se.kjellstrand.tlmfruits.R;
 import se.kjellstrand.tlmfruits.entries.EntriesFragment.OnEntriesFragmentInteractionListener;
 import se.kjellstrand.tlmfruits.entries.model.Entry;
+import se.kjellstrand.tlmfruits.model.Fruit;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Entry} and makes a call to the
  * specified {@link EntriesFragment.OnEntriesFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecyclerViewAdapter.ViewHolder> {
 
     private final EntriesFragment.OnEntriesFragmentInteractionListener mListener;
     private List<Entry> entryList;
+    private Map<Integer, Fruit> fruits = new HashMap<>();
+    private String entryFormatterText = null;
 
     public EntriesRecyclerViewAdapter(OnEntriesFragmentInteractionListener listener) {
         mListener = listener;
@@ -28,6 +32,8 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        entryFormatterText = parent.getContext().getString(R.string.entryText);
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_entry, parent, false);
         return new ViewHolder(view);
@@ -35,9 +41,17 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = entryList.get(position);
-        holder.mIdView.setText(entryList.get(position).id + "");
-        holder.mContentView.setText(entryList.get(position).date);
+
+        Entry entry = entryList.get(position);
+
+        int nbrOfFruits = entry.entryFruit.size();
+        int nbrOfVitamins = entry.entryFruit.stream()
+                .mapToInt(entryFruit -> fruits.get(entryFruit.fruitId).vitamins * entryFruit.amount)
+                .sum();
+
+        holder.mItem = entry;
+        holder.mIdView.setText(String.valueOf(entry.id));
+        holder.mContentView.setText(String.format(entryFormatterText, entry.date, nbrOfFruits, nbrOfVitamins));
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {
@@ -62,6 +76,10 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         notifyDataSetChanged();
     }
 
+    public void setFruits(List<Fruit> fruitsList) {
+        fruitsList.stream().forEach(fruit -> fruits.put(fruit.id, fruit));
+    }
+
     public Entry getEntry(int position) {
         return entryList.get(position);
     }
@@ -72,16 +90,16 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Entry mItem;
+        final View mView;
+        final TextView mIdView;
+        final TextView mContentView;
+        Entry mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.item_number);
+            mContentView = view.findViewById(R.id.content);
         }
 
         @Override

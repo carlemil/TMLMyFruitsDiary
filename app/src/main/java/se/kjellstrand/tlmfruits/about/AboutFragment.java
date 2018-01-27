@@ -13,18 +13,14 @@ import se.kjellstrand.tlmfruits.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AboutFragment.OnFragmentInteractionListener} interface
+ * {@link OnAboutFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link AboutFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class AboutFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
-    public AboutFragment() {
-        // Required empty public constructor
-    }
+    private OnAboutFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -47,11 +43,11 @@ public class AboutFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnAboutFragmentInteractionListener) {
+            mListener = (OnAboutFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnAboutFragmentInteractionListener");
         }
     }
 
@@ -71,7 +67,7 @@ public class AboutFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnAboutFragmentInteractionListener {
         void onAboutFragmentInteraction();
     }
 }

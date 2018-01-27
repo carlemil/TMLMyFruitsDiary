@@ -1,16 +1,22 @@
 package se.kjellstrand.tlmfruits.entries.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Entry {
-    public int id;
-    public String date;
-    public List<Fruit> fruit;
 
-    public Entry(int id, String date, List<Fruit> fruit) {
+    public int id;
+
+    public String date;
+
+    @SerializedName("fruit")
+    public List<EntryFruit> entryFruit;
+
+    public Entry(int id, String date, List<EntryFruit> entryFruit) {
         this.id = id;
         this.date = date;
-        this.fruit = fruit;
+        this.entryFruit = entryFruit;
     }
 
     @Override
@@ -18,7 +24,7 @@ public class Entry {
         return "Entry{" +
                 "id=" + id +
                 ", date='" + date + '\'' +
-                ", fruit=" + fruit +
+                ", entryFruit=" + entryFruit +
                 '}';
     }
 }
