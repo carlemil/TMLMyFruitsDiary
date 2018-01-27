@@ -15,5 +15,6 @@
     <string name="entryText">%s - %d fruits and %d vitamins.</string>
     <string name="entry_list_fragment_titel">Entry list</string>
     <string name="about_fragment_title">About</string>
+    <string name="you_had">You had %d</string>
 
 </resources>

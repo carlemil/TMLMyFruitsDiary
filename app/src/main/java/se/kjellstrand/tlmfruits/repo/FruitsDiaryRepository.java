@@ -22,6 +22,7 @@ import se.kjellstrand.tlmfruits.model.PostEntry;
 @Singleton
 public class FruitsDiaryRepository {
 
+    public static final String BASE_URL = "https://fruitdiary.test.themobilelife.com/";
     private FruitsDiaryService service;
 
     public FruitsDiaryRepository() {
@@ -30,7 +31,7 @@ public class FruitsDiaryRepository {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://fruitdiary.test.themobilelife.com/")
+                .baseUrl(BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

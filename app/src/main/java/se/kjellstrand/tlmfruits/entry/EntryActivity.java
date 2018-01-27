@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,6 +20,7 @@ import se.kjellstrand.tlmfruits.R;
 import se.kjellstrand.tlmfruits.model.Entry;
 import se.kjellstrand.tlmfruits.model.EntryFruit;
 import se.kjellstrand.tlmfruits.model.Fruit;
+import se.kjellstrand.tlmfruits.repo.FruitsDiaryRepository;
 
 public class EntryActivity extends AppCompatActivity {
 
@@ -45,16 +47,27 @@ public class EntryActivity extends AppCompatActivity {
 
         viewModel.getFruits().observe(this, fruitResource -> {
             final Map<Integer, Fruit> fruits = new HashMap<>();
-            fruitResource.data.stream().forEach(fruit -> fruits.put(fruit.id, fruit));
+            assert fruitResource != null;
+            fruitResource.data.forEach(fruit -> fruits.put(fruit.id, fruit));
             viewModel.getEntry(entryId).observe(this, entryResource -> {
-                // TODO Add errorhandling
-                Entry entry = entryResource.data;
-                getSupportActionBar().setTitle(entry.id + " - " + entry.date);
+                switch (entryResource.status) {
+                    case SUCCESS:
+                        Entry entry = entryResource.data;
+                        getSupportActionBar().setTitle(entry.id + " - " + entry.date);
 
-                LinearLayout root = findViewById(R.id.activity_entry_root);
-                entry.entryFruit.stream().forEach(entryFruit -> root.addView(inflateAndPopulateFruitLayout(fruits, entryFruit)));
+                        LinearLayout root = findViewById(R.id.activity_entry_root);
+                        entry.entryFruit.stream().forEach(entryFruit -> root.addView(inflateAndPopulateFruitLayout(fruits, entryFruit)));
+                        break;
+                    case ERROR:
+                        showToast("Failed to load Entry.");
+                        break;
+                }
             });
         });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private View inflateAndPopulateFruitLayout(Map<Integer, Fruit> fruits, EntryFruit entryFruit) {
@@ -63,11 +76,11 @@ public class EntryActivity extends AppCompatActivity {
         TextView textView = root.findViewById(R.id.textView);
         ImageView imageView = root.findViewById(R.id.imageView);
         Fruit fruit = fruits.get(entryFruit.fruitId);
-        textView.setText("You had " + entryFruit.amount);
+        textView.setText(String.format(getString(R.string.you_had), entryFruit.amount));
         // Can we move this out of the activity and into the viewModel somehow?
         int imageSize = getResources().getDimensionPixelSize(R.dimen.fruit_image_size);
         Picasso.with(getBaseContext())
-                .load("https://fruitdiary.test.themobilelife.com/" + fruit.image)
+                .load(FruitsDiaryRepository.BASE_URL + fruit.image)
                 .resize(imageSize, imageSize)
                 .into(imageView);
         return root;

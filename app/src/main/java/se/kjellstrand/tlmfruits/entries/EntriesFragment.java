@@ -67,7 +67,7 @@ public class EntriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.entry_list_fragment_titel);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.entry_list_fragment_titel);
     }
 
     private void setupSwipeToDelete(RecyclerView recyclerView) {

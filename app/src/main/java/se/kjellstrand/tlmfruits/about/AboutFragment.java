@@ -44,7 +44,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.about_fragment_title);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.about_fragment_title);
     }
 
     @Override
