@@ -66,11 +66,9 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         return entryList.get(position);
     }
 
-    public Entry removeEntry(int position) {
-        Entry entry = getEntry(position);
+    public void removeEntry(int position) {
         entryList.remove(position);
         notifyItemRemoved(position);
-        return entry;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
