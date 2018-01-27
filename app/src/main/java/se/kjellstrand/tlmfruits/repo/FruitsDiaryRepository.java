@@ -1,4 +1,4 @@
-package se.kjellstrand.tlmfruits;
+package se.kjellstrand.tlmfruits.repo;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -16,7 +16,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import se.kjellstrand.tlmfruits.entries.model.Entry;
-import se.kjellstrand.tlmfruits.entries.model.Fruit;
 import se.kjellstrand.tlmfruits.entries.model.PostEntry;
 
 @Singleton
@@ -37,58 +36,39 @@ public class FruitsDiaryRepository {
         service = retrofit.create(FruitsDiaryService.class);
     }
 
-    public LiveData<List<Entry>> getEntries() {
+    public LiveData<Resource<List<Entry>>> getEntries() {
         // Add a in memory cache to avoid hitting the network for configuration changes
-        final MutableLiveData<List<Entry>> data = new MutableLiveData<>();
+        final MutableLiveData<Resource<List<Entry>>> data = new MutableLiveData<>();
         service.getEntries().enqueue(new Callback<List<Entry>>() {
             @Override
             public void onResponse(Call<List<Entry>> call, Response<List<Entry>> response) {
-                Log.e("TAG", "Got Response.");
-                data.setValue(response.body());
+                data.setValue(Resource.success(response.body()));
             }
 
             @Override
             public void onFailure(Call<List<Entry>> call, Throwable t) {
-                // TODO handle error case
-                Log.e("TAG", "Error: " + t);
+                data.setValue(Resource.error(t.getMessage(), null));
             }
         });
         return data;
     }
 
-    public LiveData<List<Fruit>> getFruits() {
+    public LiveData<Resource<Entry>> addEntry(PostEntry entry) {
         // Add a in memory cache to avoid hitting the network for configuration changes
-        final MutableLiveData<List<Fruit>> data = new MutableLiveData<>();
-        service.getFruits().enqueue(new Callback<List<Fruit>>() {
-            @Override
-            public void onResponse(Call<List<Fruit>> call, Response<List<Fruit>> response) {
-                Log.e("TAG", "Got Response.");
-                data.setValue(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Fruit>> call, Throwable t) {
-                // TODO handle error case
-                Log.e("TAG", "Error: " + t);
-            }
-        });
-        return data;
-    }
-
-    public LiveData<Entry> addEntry(PostEntry entry) {
-        // Add a in memory cache to avoid hitting the network for configuration changes
-        final MutableLiveData<Entry> data = new MutableLiveData<Entry>();
+        final MutableLiveData<Resource<Entry>> data = new MutableLiveData<Resource<Entry>>();
         service.addEntry(entry).enqueue(new Callback<Entry>() {
             @Override
             public void onResponse(Call<Entry> call, Response<Entry> response) {
-                Log.e("TAG", "Got Response.");
-                data.setValue(response.body());
+                if (response.code() == 200) {
+                    data.setValue(Resource.success(response.body()));
+                } else {
+                    data.setValue(Resource.error(response.message(), null));
+                }
             }
 
             @Override
             public void onFailure(Call<Entry> call, Throwable t) {
-                // TODO handle error case
-                Log.e("TAG", "Error: " + t);
+                data.setValue(Resource.error(t.getMessage(), null));
             }
         });
         return data;
@@ -99,7 +79,6 @@ public class FruitsDiaryRepository {
         service.deleteEntry(id).enqueue(new Callback<Entry>() {
             @Override
             public void onResponse(Call<Entry> call, Response<Entry> response) {
-                Log.e("TAG", "Got Response.");
                 data.setValue(response.body());
             }
 
@@ -111,4 +90,23 @@ public class FruitsDiaryRepository {
         });
         return data;
     }
+
+//    public LiveData<List<Fruit>> getFruits() {
+//        // Add a in memory cache to avoid hitting the network for configuration changes
+//        final MutableLiveData<List<Fruit>> data = new MutableLiveData<>();
+//        service.getFruits().enqueue(new Callback<List<Fruit>>() {
+//            @Override
+//            public void onResponse(Call<List<Fruit>> call, Response<List<Fruit>> response) {
+//                data.setValue(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Fruit>> call, Throwable t) {
+//                // TODO handle error case
+//                Log.e("TAG", "Error: " + t);
+//            }
+//        });
+//        return data;
+//    }
+
 }

@@ -1,4 +1,4 @@
-package se.kjellstrand.tlmfruits;
+package se.kjellstrand.tlmfruits.repo;
 
 import java.util.List;
 

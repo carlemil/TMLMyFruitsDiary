@@ -5,9 +5,10 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import se.kjellstrand.tlmfruits.FruitsDiaryRepository;
+import se.kjellstrand.tlmfruits.repo.FruitsDiaryRepository;
 import se.kjellstrand.tlmfruits.entries.model.Entry;
 import se.kjellstrand.tlmfruits.entries.model.PostEntry;
+import se.kjellstrand.tlmfruits.repo.Resource;
 
 public class EntriesViewModel extends ViewModel {
 
@@ -18,11 +19,11 @@ public class EntriesViewModel extends ViewModel {
         fruitsDiaryRepository = new FruitsDiaryRepository();
     }
 
-    public LiveData<List<Entry>> getEntries() {
+    public LiveData<Resource<List<Entry>>> getEntries() {
         return fruitsDiaryRepository.getEntries();
     }
 
-    public LiveData<Entry> addEntry(PostEntry entry) {
+    public LiveData<Resource<Entry>> addEntry(PostEntry entry) {
         return fruitsDiaryRepository.addEntry(entry);
     }
 

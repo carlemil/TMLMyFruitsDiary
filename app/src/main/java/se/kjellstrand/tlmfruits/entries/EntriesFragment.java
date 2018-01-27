@@ -13,13 +13,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import se.kjellstrand.tlmfruits.R;
-import se.kjellstrand.tlmfruits.entries.model.Entry;
 import se.kjellstrand.tlmfruits.entries.model.PostEntry;
+import se.kjellstrand.tlmfruits.repo.Resource;
 
 /**
  * A fragment representing a list of Items.
@@ -65,9 +66,7 @@ public class EntriesFragment extends Fragment {
 
         setupSwipeToDelete(recyclerView);
 
-        viewModel.getEntries().observe(this, entries -> {
-            entriesRecyclerViewAdapter.setEntries(entries);
-        });
+        updateEntries(view);
 
         return view;
     }
@@ -110,10 +109,16 @@ public class EntriesFragment extends Fragment {
                 myCalendar.set(year, monthOfYear, dayOfMonth);
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 viewModel.addEntry(new PostEntry(format.format(myCalendar.getTime())))
-                        .observe(EntriesFragment.this, entry -> {
-                            viewModel.getEntries().observe(EntriesFragment.this, entries -> {
-                                entriesRecyclerViewAdapter.setEntries(entries);
-                            });
+                        .observe(EntriesFragment.this, addEntryResource -> {
+                            switch (addEntryResource.status) {
+                                case SUCCESS:
+                                    updateEntries(view);
+                                    break;
+                                case ERROR:
+                                    showToast("Failed to add Entry. Possible duplicate?");
+                                    break;
+                            }
+
                         });
             };
             // Pop date dialog
@@ -121,6 +126,23 @@ public class EntriesFragment extends Fragment {
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
+    }
+
+    private void updateEntries(View view) {
+        viewModel.getEntries().observe(EntriesFragment.this, getEntryResource -> {
+            switch (getEntryResource.status) {
+                case SUCCESS:
+                    entriesRecyclerViewAdapter.setEntries(getEntryResource.data);
+                    break;
+                case ERROR:
+                    showToast("Failed to update Entries.");
+                    break;
+            }
+        });
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
