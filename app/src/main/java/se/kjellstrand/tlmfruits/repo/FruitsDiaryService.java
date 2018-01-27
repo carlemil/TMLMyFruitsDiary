@@ -9,8 +9,8 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import se.kjellstrand.tlmfruits.model.Entry;
-import se.kjellstrand.tlmfruits.model.PostEntry;
 import se.kjellstrand.tlmfruits.model.Fruit;
+import se.kjellstrand.tlmfruits.model.PostEntry;
 
 public interface FruitsDiaryService {
     @GET("api/fruit")

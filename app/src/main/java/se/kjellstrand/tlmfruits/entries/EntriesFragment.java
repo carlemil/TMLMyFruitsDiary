@@ -50,7 +50,7 @@ public class EntriesFragment extends Fragment {
 
         entriesRecyclerViewAdapter = new EntriesRecyclerViewAdapter(mListener);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.entry_list);
+        RecyclerView recyclerView = view.findViewById(R.id.entry_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(entriesRecyclerViewAdapter);
 
@@ -174,6 +174,6 @@ public class EntriesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnEntriesFragmentInteractionListener {
-        void onEntriesFragmentInteraction();
+        void onEntriesFragmentInteraction(int id);
     }
 }

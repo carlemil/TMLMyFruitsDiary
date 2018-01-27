@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import se.kjellstrand.tlmfruits.about.AboutFragment;
 import se.kjellstrand.tlmfruits.entries.EntriesFragment;
+import se.kjellstrand.tlmfruits.entry.EntryActivity;
 
 public class MainActivity extends
         AppCompatActivity implements
@@ -16,8 +17,9 @@ public class MainActivity extends
     private Fragment aboutFragment = new AboutFragment();
     private Fragment entriesFragment = new EntriesFragment();
 
+    private android.support.v4.app.FragmentManager fragmentManager;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (item.getItemId()) {
             case R.id.navigation_about:
@@ -38,10 +40,18 @@ public class MainActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        fragmentManager = getSupportFragmentManager();
+
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        fragmentManager.beginTransaction()
+                .add(R.id.content_frame, entriesFragment)
+                .commit();
+
+        navigation.setSelectedItemId(R.id.navigation_entries);
     }
 
     @Override
@@ -50,7 +60,7 @@ public class MainActivity extends
     }
 
     @Override
-    public void onEntriesFragmentInteraction() {
-
+    public void onEntriesFragmentInteraction(int id) {
+        EntryActivity.start(this, id);
     }
 }

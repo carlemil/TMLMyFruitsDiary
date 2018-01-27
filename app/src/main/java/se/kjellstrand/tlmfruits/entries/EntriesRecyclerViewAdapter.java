@@ -57,7 +57,8 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
             if (null != mListener) {
                 // Notify the active callbacks interface (the activity, if the
                 // fragment is attached to one) that an item has been selected.
-                mListener.onEntriesFragmentInteraction();
+                int id = Integer.parseInt(((TextView) v.findViewById(R.id.entry_id)).getText().toString());
+                mListener.onEntriesFragmentInteraction(id);
             }
         });
     }
@@ -98,7 +99,7 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
         ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.item_number);
+            mIdView = view.findViewById(R.id.entry_id);
             mContentView = view.findViewById(R.id.content);
         }
 
