@@ -1,4 +1,4 @@
-package se.kjellstrand.tlmfruits.entries.model;
+package se.kjellstrand.tlmfruits.model;
 
 import android.util.Log;
 

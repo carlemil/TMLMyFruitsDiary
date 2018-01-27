@@ -12,7 +12,7 @@ import java.util.Map;
 
 import se.kjellstrand.tlmfruits.R;
 import se.kjellstrand.tlmfruits.entries.EntriesFragment.OnEntriesFragmentInteractionListener;
-import se.kjellstrand.tlmfruits.entries.model.Entry;
+import se.kjellstrand.tlmfruits.model.Entry;
 import se.kjellstrand.tlmfruits.model.Fruit;
 
 /**

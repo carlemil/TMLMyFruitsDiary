@@ -8,9 +8,8 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import se.kjellstrand.tlmfruits.entries.model.Entry;
-import se.kjellstrand.tlmfruits.entries.model.EntryFruit;
-import se.kjellstrand.tlmfruits.entries.model.PostEntry;
+import se.kjellstrand.tlmfruits.model.Entry;
+import se.kjellstrand.tlmfruits.model.PostEntry;
 import se.kjellstrand.tlmfruits.model.Fruit;
 
 public interface FruitsDiaryService {

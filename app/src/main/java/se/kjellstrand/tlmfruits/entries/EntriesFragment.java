@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import se.kjellstrand.tlmfruits.R;
-import se.kjellstrand.tlmfruits.entries.model.PostEntry;
+import se.kjellstrand.tlmfruits.model.PostEntry;
 
 /**
  * A fragment representing a list of Items.

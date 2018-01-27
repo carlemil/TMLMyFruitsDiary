@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Singleton;
 
@@ -14,10 +15,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import se.kjellstrand.tlmfruits.entries.model.Entry;
-import se.kjellstrand.tlmfruits.entries.model.EntryFruit;
-import se.kjellstrand.tlmfruits.entries.model.PostEntry;
+import se.kjellstrand.tlmfruits.model.Entry;
 import se.kjellstrand.tlmfruits.model.Fruit;
+import se.kjellstrand.tlmfruits.model.PostEntry;
 
 @Singleton
 public class FruitsDiaryRepository {
@@ -56,6 +56,30 @@ public class FruitsDiaryRepository {
             }
         });
         return data;
+    }
+
+    public LiveData<Resource<Entry>> getEntry(int id) {
+        final MutableLiveData<Resource<Entry>> data = new MutableLiveData<>();
+        service.getEntries().enqueue(new Callback<List<Entry>>() {
+            @Override
+            public void onResponse(Call<List<Entry>> call, Response<List<Entry>> response) {
+                if (response.code() == 200) {
+                    Optional<Entry> entry = response.body().stream()
+                            .filter(it -> it.id == id)
+                            .findAny();
+                    data.setValue(Resource.success(entry.get()));
+                } else {
+                    data.setValue(Resource.error(response.message(), null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Entry>> call, Throwable t) {
+                data.setValue(Resource.error(t.getMessage(), null));
+            }
+        });
+        return data;
+
     }
 
     public LiveData<Resource<Entry>> addEntry(PostEntry entry) {
@@ -118,5 +142,4 @@ public class FruitsDiaryRepository {
         });
         return data;
     }
-
 }

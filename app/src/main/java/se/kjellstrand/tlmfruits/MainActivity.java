@@ -5,9 +5,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import javax.inject.Inject;
-
-import retrofit2.Retrofit;
 import se.kjellstrand.tlmfruits.about.AboutFragment;
 import se.kjellstrand.tlmfruits.entries.EntriesFragment;
 
@@ -15,9 +12,6 @@ public class MainActivity extends
         AppCompatActivity implements
         AboutFragment.OnAboutFragmentInteractionListener,
         EntriesFragment.OnEntriesFragmentInteractionListener {
-
-    @Inject
-    Retrofit retrofit;
 
     private Fragment aboutFragment = new AboutFragment();
     private Fragment entriesFragment = new EntriesFragment();

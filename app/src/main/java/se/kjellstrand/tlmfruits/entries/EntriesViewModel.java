@@ -5,11 +5,10 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import se.kjellstrand.tlmfruits.entries.model.EntryFruit;
 import se.kjellstrand.tlmfruits.model.Fruit;
 import se.kjellstrand.tlmfruits.repo.FruitsDiaryRepository;
-import se.kjellstrand.tlmfruits.entries.model.Entry;
-import se.kjellstrand.tlmfruits.entries.model.PostEntry;
+import se.kjellstrand.tlmfruits.model.Entry;
+import se.kjellstrand.tlmfruits.model.PostEntry;
 import se.kjellstrand.tlmfruits.repo.Resource;
 
 public class EntriesViewModel extends ViewModel {
