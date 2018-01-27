@@ -107,25 +107,27 @@ public class EntriesFragment extends Fragment {
             Calendar myCalendar = Calendar.getInstance();
             DatePickerDialog.OnDateSetListener onDateSetListener = (view1, year, monthOfYear, dayOfMonth) -> {
                 myCalendar.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                viewModel.addEntry(new PostEntry(format.format(myCalendar.getTime())))
-                        .observe(EntriesFragment.this, addEntryResource -> {
-                            switch (addEntryResource.status) {
-                                case SUCCESS:
-                                    updateEntries(view);
-                                    break;
-                                case ERROR:
-                                    showToast("Failed to add Entry. Possible duplicate?");
-                                    break;
-                            }
-
-                        });
+                addEntry(view, myCalendar, new SimpleDateFormat("yyyy-MM-dd"));
             };
             // Pop date dialog
             new DatePickerDialog(context, onDateSetListener, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
+    }
+
+    private void addEntry(View view, Calendar myCalendar, SimpleDateFormat format) {
+        viewModel.addEntry(new PostEntry(format.format(myCalendar.getTime())))
+                .observe(EntriesFragment.this, addEntryResource -> {
+                    switch (addEntryResource.status) {
+                        case SUCCESS:
+                            updateEntries(view);
+                            break;
+                        case ERROR:
+                            showToast("Failed to add Entry. Possible duplicate?");
+                            break;
+                    }
+                });
     }
 
     private void updateEntries(View view) {
