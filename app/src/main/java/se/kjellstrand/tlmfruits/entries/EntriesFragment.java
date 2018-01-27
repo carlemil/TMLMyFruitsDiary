@@ -46,11 +46,6 @@ public class EntriesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(EntriesViewModel.class);
-
-        viewModel.getEntries().observe(this, entries -> {
-            entriesRecyclerViewAdapter.setEntries(entries);
-        });
-
     }
 
     @Override
@@ -69,6 +64,10 @@ public class EntriesFragment extends Fragment {
         setupFAB(view, context);
 
         setupSwipeToDelete(recyclerView);
+
+        viewModel.getEntries().observe(this, entries -> {
+            entriesRecyclerViewAdapter.setEntries(entries);
+        });
 
         return view;
     }
