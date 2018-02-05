@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import se.kjellstrand.tlmfruits.model.Entry;
 import se.kjellstrand.tlmfruits.model.Fruit;
 import se.kjellstrand.tlmfruits.repo.FruitsDiaryRepository;
@@ -12,7 +14,7 @@ import se.kjellstrand.tlmfruits.repo.Resource;
 
 public class EntryViewModel extends ViewModel {
 
-    // TODO @Inject with Dagger 2
+    @Inject
     public FruitsDiaryRepository fruitsDiaryRepository;
 
     public EntryViewModel() {
