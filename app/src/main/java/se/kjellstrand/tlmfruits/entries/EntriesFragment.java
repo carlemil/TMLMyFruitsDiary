@@ -85,7 +85,7 @@ public class EntriesFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setMessage(R.string.confirm_delete);
                     builder.setPositiveButton(R.string.remove, (dialog, which) -> {
-                        int entryId = entriesRecyclerViewAdapter.getEntry(position).id;
+                        String entryId = entriesRecyclerViewAdapter.getEntry(position).id;
                         entriesRecyclerViewAdapter.removeEntry(position);
                         viewModel.deleteEntry(entryId);
                         return;

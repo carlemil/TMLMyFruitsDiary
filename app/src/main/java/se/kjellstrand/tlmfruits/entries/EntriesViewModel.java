@@ -30,7 +30,7 @@ public class EntriesViewModel extends ViewModel {
         return fruitsDiaryRepository.addEntry(entry);
     }
 
-    public LiveData<Resource<Entry>> deleteEntry(int entry) {
+    public LiveData<Resource<Entry>> deleteEntry(String entry) {
         return fruitsDiaryRepository.deleteEntry(entry);
     }
 

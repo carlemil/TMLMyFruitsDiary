@@ -6,14 +6,18 @@ import java.util.List;
 
 public class Entry {
 
-    public int id;
+    public String id;
 
     public String date;
+
+    public int nbrOfFruits;
+
+    public int nbrOfVitamins;
 
     @SerializedName("fruit")
     public List<EntryFruit> entryFruit;
 
-    public Entry(int id, String date, List<EntryFruit> entryFruit) {
+    public Entry(String id, String date, List<EntryFruit> entryFruit) {
         this.id = id;
         this.date = date;
         this.entryFruit = entryFruit;
@@ -22,9 +26,10 @@ public class Entry {
     @Override
     public String toString() {
         return "Entry{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", date='" + date + '\'' +
-                ", entryFruit=" + entryFruit +
+                ", nbrOfFruits=" + nbrOfFruits +
+                ", nbrOfVitamins=" + nbrOfVitamins +
                 '}';
     }
 }

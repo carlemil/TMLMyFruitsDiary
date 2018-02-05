@@ -67,7 +67,7 @@ public class FruitsDiaryRepository {
             public void onResponse(Call<List<Entry>> call, Response<List<Entry>> response) {
                 if (response.code() == 200) {
                     Optional<Entry> entry = response.body().stream()
-                            .filter(it -> it.id == id)
+                            .filter(it -> it.id.equals(id))
                             .findAny();
                     data.setValue(Resource.success(entry.get()));
                 } else {
@@ -105,7 +105,7 @@ public class FruitsDiaryRepository {
         return data;
     }
 
-    public LiveData<Resource<Entry>> deleteEntry(int id) {
+    public LiveData<Resource<Entry>> deleteEntry(String id) {
         final MutableLiveData<Resource<Entry>> data = new MutableLiveData<>();
         service.deleteEntry(id).enqueue(new Callback<Entry>() {
             @Override

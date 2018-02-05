@@ -23,5 +23,5 @@ public interface FruitsDiaryService {
     Call<Entry> addEntry(@Body PostEntry entry);
 
     @DELETE("api/entry/{entryId}")
-    Call<Entry> deleteEntry(@Path("entryId") int id);
+    Call<Entry> deleteEntry(@Path("entryId") String id);
 }
