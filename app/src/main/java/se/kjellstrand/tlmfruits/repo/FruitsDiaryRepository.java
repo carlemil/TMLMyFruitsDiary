@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import okhttp3.OkHttpClient;
@@ -19,12 +20,12 @@ import se.kjellstrand.tlmfruits.model.Entry;
 import se.kjellstrand.tlmfruits.model.Fruit;
 import se.kjellstrand.tlmfruits.model.PostEntry;
 
-@Singleton
 public class FruitsDiaryRepository {
 
     public static final String BASE_URL = "https://fruitdiary.test.themobilelife.com/";
     private FruitsDiaryService service;
 
+    @Inject
     public FruitsDiaryRepository() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
