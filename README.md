@@ -17,9 +17,12 @@ Documentation and implementation differs, doc says add but impl does set
 
 Left to do:
 
-Use databindings
-
-Use Dagger2
+Change from lineaylayout to recylerview in entry details page and databind, same same as for the entries list.
+Add a in memory cache to avoid hitting the network for every reaload of data.
+Make the recyclerview viewholder generic, example can be found  in https://medium.com/google-developers/android-data-binding-recyclerview-db7c40d9f0e4
+Cleanup strings.xml, group by screen.
+Rewers xml layout names, activity_main.xml -> main_activtiy.xml
+Can we move the clicklistener from the viewholder to avoid creating one per view, and put it on the recyclerview instead?
 
 
 Done:

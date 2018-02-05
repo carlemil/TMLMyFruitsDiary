@@ -3,6 +3,7 @@ package se.kjellstrand.tlmfruits.entries;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
     private final EntriesFragment.OnEntriesFragmentInteractionListener mListener;
     private List<Entry> entryList;
     private Map<Integer, Fruit> fruits = new HashMap<>();
-    private String entryFormatterText = null;
 
 
     public EntriesRecyclerViewAdapter(OnEntriesFragmentInteractionListener listener) {
@@ -32,11 +32,6 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        entryFormatterText = parent.getContext().getString(R.string.entryText);
-//
-//        View view = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.fragment_entry_list_item, parent, false);
-
         LayoutInflater layoutInflater =
                 LayoutInflater.from(parent.getContext());
 
@@ -57,19 +52,6 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
                 .sum();
 
         holder.bind(entry);
-
-//        holder.mItem = entry;
-//        holder.mIdView.setText(String.valueOf(entry.id));
-//        holder.mContentView.setText(String.format(entryFormatterText, entry.date, nbrOfFruits, nbrOfVitamins));
-
-//        holder.mView.setOnClickListener(v -> {
-//            if (null != mListener) {
-//                // Notify the active callbacks interface (the activity, if the
-//                // fragment is attached to one) that an item has been selected.
-//                int id = Integer.parseInt(((TextView) v.findViewById(R.id.entry_id)).getText().toString());
-//                mListener.onEntriesFragmentInteraction(id);
-//            }
-//        });
     }
 
     @Override
@@ -109,6 +91,13 @@ public class EntriesRecyclerViewAdapter extends RecyclerView.Adapter<EntriesRecy
 
         public void bind(Entry entry) {
             binding.setEntry(entry);
+            binding.setClickListener(id -> {
+                if (null != mListener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListener.onEntriesFragmentInteraction(id);
+                }
+            });
             binding.executePendingBindings();
         }
     }

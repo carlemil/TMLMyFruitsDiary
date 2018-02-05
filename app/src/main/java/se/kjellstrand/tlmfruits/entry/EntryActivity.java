@@ -26,10 +26,10 @@ public class EntryActivity extends AppCompatActivity {
 
     private static final String EXTRA_ENTRY_ID = "EXTRA_ENTRY_ID";
 
-    private int entryId = -1;
+    private String entryId = "-1";
     private EntryViewModel viewModel;
 
-    public static void start(Context context, int id) {
+    public static void start(Context context, String id) {
         Intent intent = new Intent(context, EntryActivity.class);
         intent.putExtra(EXTRA_ENTRY_ID, id);
         context.startActivity(intent);
@@ -43,7 +43,7 @@ public class EntryActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
 
         Intent intent = getIntent();
-        entryId = intent.getIntExtra(EXTRA_ENTRY_ID, -1);
+        entryId = intent.getStringExtra(EXTRA_ENTRY_ID);
 
         viewModel.getFruits().observe(this, fruitResource -> {
             final Map<Integer, Fruit> fruits = new HashMap<>();
@@ -72,7 +72,7 @@ public class EntryActivity extends AppCompatActivity {
 
     private View inflateAndPopulateFruitLayout(Map<Integer, Fruit> fruits, EntryFruit entryFruit) {
         // TODO move this to a custom view that hides the inflation and findview stuff
-        View root = getLayoutInflater().inflate(R.layout.entry_fruit_list_item, null);
+        View root = getLayoutInflater().inflate(R.layout.activity_entry_fruit_list_item, null);
         TextView textView = root.findViewById(R.id.textView);
         ImageView imageView = root.findViewById(R.id.imageView);
         Fruit fruit = fruits.get(entryFruit.fruitId);

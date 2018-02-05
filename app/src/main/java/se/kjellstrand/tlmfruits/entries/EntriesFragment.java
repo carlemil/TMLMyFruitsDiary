@@ -181,6 +181,6 @@ public class EntriesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnEntriesFragmentInteractionListener {
-        void onEntriesFragmentInteraction(int id);
+        void onEntriesFragmentInteraction(String id);
     }
 }

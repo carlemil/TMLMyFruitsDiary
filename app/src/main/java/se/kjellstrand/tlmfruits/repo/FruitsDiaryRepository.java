@@ -60,7 +60,7 @@ public class FruitsDiaryRepository {
         return data;
     }
 
-    public LiveData<Resource<Entry>> getEntry(int id) {
+    public LiveData<Resource<Entry>> getEntry(String id) {
         final MutableLiveData<Resource<Entry>> data = new MutableLiveData<>();
         service.getEntries().enqueue(new Callback<List<Entry>>() {
             @Override

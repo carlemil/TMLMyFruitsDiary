@@ -6,11 +6,15 @@
         <variable
             name="entry"
             type="se.kjellstrand.tlmfruits.model.Entry" />
+        <variable
+            name="clickListener"
+            type="se.kjellstrand.tlmfruits.entries.EntryClickListener" />
     </data>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(entry.id)}"
         android:orientation="horizontal">
 
         <TextView

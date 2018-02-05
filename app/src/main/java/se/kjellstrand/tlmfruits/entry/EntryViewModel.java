@@ -21,7 +21,7 @@ public class EntryViewModel extends ViewModel {
         fruitsDiaryRepository = new FruitsDiaryRepository();
     }
 
-    public LiveData<Resource<Entry>> getEntry(int id) {
+    public LiveData<Resource<Entry>> getEntry(String id) {
         return fruitsDiaryRepository.getEntry(id);
     }
 

@@ -60,7 +60,7 @@ public class MainActivity extends
     }
 
     @Override
-    public void onEntriesFragmentInteraction(int id) {
+    public void onEntriesFragmentInteraction(String id) {
         EntryActivity.start(this, id);
     }
 }
