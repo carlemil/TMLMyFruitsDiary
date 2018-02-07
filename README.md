@@ -27,7 +27,7 @@ Can we move the clicklistener from the viewholder to avoid creating one per view
 
 Done:
 
-Requirement 1 - The UI should at least have two tabs, ”My Diary” and ”About”.  
+Requirement 1 - The UI should at least have two tabs, â€My Diaryâ€ and â€Aboutâ€.  
 
 Requirement 2 - The existing entries should be presented through a list of some
  sort and a specific entry should be viewable through a detail view. Each row
@@ -35,22 +35,22 @@ Requirement 2 - The existing entries should be presented through a list of some
  and the total number of vitamins in the eaten fruits that date
  
 Requirement 3 - It should be possible to add and remove date entries.  
+
+Requirement 5  The available fruits should be loaded during app start. They 
+could be locally stored, but should be updated if the list of fruit changes 
+on the server. 
+(Loaded on demand and not on app start.)
  
+Requirement 7  When adding a fruit to an entry, an image of the current fruit 
+should be visible. The image can be cached.  
 
 Not doing:
 
 Requirement 4  It should be possible the change/edit the different fruits and 
 the number of fruits for each entry. 
- 
-Requirement 5  The available fruits should be loaded during app start. They 
-could be locally stored, but should be updated if the list of fruit changes 
-on the server. 
- 
+  
 Requirement 6  The entries should not be locally stored other than in memory 
 after reading from the back end.  
- 
-Requirement 7  When adding a fruit to an entry, an image of the current fruit 
-should be visible. The image can be cached.  
  
 Requirement 8  When adding a fruit to an entry the name of the fruit and the 
 number of vitamins the fruit contains should be visible to the user. 
